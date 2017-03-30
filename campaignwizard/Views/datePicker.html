@@ -1,0 +1,7 @@
+<div>
+    <p>Collab expires on:<strong> {{vm.campaign.expiration_date | date:'fullDate' }}</strong></p>
+    <p>*Pick a date as to when you want your Collab duration to end</p>
+    <div style="display:inline-block; min-height:200px;">
+        <div uib-datepicker ng-model="vm.campaign.expiration_date" class="well well-sm" datepicker-options="options"></div>
+    </div>
+</div>

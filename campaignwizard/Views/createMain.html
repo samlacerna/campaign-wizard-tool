@@ -1,0 +1,134 @@
+<div class="container main-container headerOffset">
+    <div class="row">
+        <div class="breadcrumbDiv col-lg-12">
+            <ul class="breadcrumb">
+                <li><a ui-sref="public.landing">Home</a></li>
+                <li><a ui-sref="public.campaigns">Collabs</a></li>
+                <li class="active"> Create</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row col-lg-12">
+        <!--left panel -->
+        <div class="col-lg-6 col-md-6 col-sm-5">
+            <div class="row userInfo">
+                <div class="w100 clearfix">
+                    <ul class="orderStep orderStepLook2">
+                        <li ui-sref-active="{'active': '.upload'}" class="w1-3">
+                            <a ui-sref=".upload({campaign: vm.campaign})">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <span>Upload</span>
+                            </a>
+                        </li>
+                        <li ui-sref-active="{'active': '.goal'}" class="w1-3" ng-class="{'disabled-step': vm.getState() < 1}">
+                            <a prevent-click="vm.getState() < 1" ui-sref=".goal({campaign: vm.campaign})">
+                                <i class="fa fa-money"></i>
+                                <span>Goal</span>
+                            </a>
+                        </li>
+
+                        <li ui-sref-active="{'active': '.detail'}" class="w1-3" ng-class="{'disabled-step': vm.getState() < 2}">
+                            <a prevent-click="vm.getState() < 2" ui-sref=".detail({campaign: vm.campaign})">
+                                <i class="fa fa-check-square"></i>
+                                <span>Details</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div ui-view="subContent" autoscroll="false"></div>
+        </div>
+
+        <!--right panel-->
+
+        <div class="col-lg-6 col-md-6 col-sm-6 pull-right" style="padding-right:0px">
+            <!--loader-->
+            <div ng-if="vm.Upload.isUploading || !vm.imgLoaded && vm.campaign.campaign_picture">
+                <p class="text-center">
+                    <i class="fa fa-spinner fa-spin"></i>
+                </p>
+            </div>
+            <!--form-->
+            <div ng-hide="vm.campaign.campaign_picture || vm.Upload.isUploading || vm.showFeed" class="well-sm clearfix">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <legend>Upload an image:</legend>
+
+                        <div class="form" name="uploadForm">
+                            <div class="col-md-10 col-md-offset-1 well-sm drop">
+                                <label class="control-label text-center input-file-label" for="filebutton">Upload your file here.</label>
+                                <input id="filebutton" name="campaign_picture" class="input-file" type="file" nv-file-select uploader="vm.Upload">
+                                <br>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <hr>
+                <div>
+                    <p><strong>Click here to upload photos from your Instagram Account.</strong>
+                    </p>
+                    <a href="#" ng-click="vm.authenticate()" class="btn btn-info btn-circle"><i class="fa fa-instagram"> Upload using Instagram</i></a>
+                    <!--prompting instagram login -->
+                </div>
+            </div>
+
+            <!--errors-->
+            <div class="well-sm clearfix" ng-show="vm.hasError">
+                <p class="text-center">
+                    <h3>{{vm.fileError}}</h3>
+                </p>
+            </div>
+
+            <!--preview-->
+            <div ng-show="vm.uploaded || vm.imgLoaded">
+                <img ng-if="vm.campaign.campaign_picture" img-on-load="vm.imgLoaded = true; vm.uploaded = true; vm.setState(1)" ng-class="{o0: !vm.uploaded || !vm.imgLoaded}" src="{{vm.campaign.campaign_picture}}" class="previewImage" id='imageId' name="campaign_picture"
+                /><br>
+                <a ng-click="vm.pictureModal = true">
+                    <p class="text-center">Full Preview</p>
+                </a>
+            </div>
+            <!--Instagram media Feed-->
+            <div class="row" ng-hide="vm.instagramFeed">
+                <div class="col-md-4" style="width:100" ng-repeat="image in (vm.images).slice(((vm.currentPage-1)*vm.itemsPerPage),((vm.currentPage)*vm.itemsPerPage)) track by $index">
+                    <div class="thumbnail">
+                        <a href="#" ng-click="vm.confirmPhoto($index)">
+                            <img src="{{image.images.thumbnail.url}}" alt="IMG">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div ng-hide="vm.totalItems <= 0 || vm.Upload.isUploading || vm.campaign.campaign_picture" class="pull-right">
+                <ul uib-pagination total-items="vm.totalItems" ng-model="vm.currentPage" ng-change="vm.pageChanged()" items-per-page="vm.itemsPerPage" class="pagination-sm"></ul>
+            </div>
+        </div>
+        <!--</div>-->
+        <!--/.row-->
+    </div>
+
+    <!--Preview image modal-->
+    <div class="modal fade in" id="imagePreview-modal" tabindex="-1" role="dialog" modal-render="true" uib-modal-animation-class="fade" modal-in-class="in" uib-modal-window="modal-window" style="left:18%;width:65%;" ng-show="vm.pictureModal">
+        <div class="modal-dialog" style="margin: 0 auto">
+            <div class="modal-content">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button" ng-click="vm.pictureModal = false"> ×</button>
+                <div>
+                    <img src="{{vm.imageSrc}}" style="width:100%;border: 4px ridge rgba(0, 0, 0, 0.1)">
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
+    <!--Instagram photo confirm modal-->
+    <script type="text/ng-template" id="confirmModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Are you sure you want to upload this photo?</h3>
+        </div>
+        <div class="modal-body">
+            Click OK to upload this photo from Instagram.
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="pc.ok()">OK</button></a>
+            <button class="btn btn-warning" ng-click="pc.cancel()">Cancel</button>
+        </div>
+    </script>
+</div>

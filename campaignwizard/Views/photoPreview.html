@@ -1,0 +1,24 @@
+<div ng-hide="CampaignWizCtrl.hidePreview" class="well-sm clearfix" ng-show="CampaignWizCtrl.campaign.campaign_picture">
+    <form class="form-horizontal">
+        <fieldset class>
+
+            <legend>Choose your files:</legend>
+
+            <div class="form" name="uploadForm">
+                <div class="col-md-10 col-md-offset-1 well-sm drop" <label class="control-label text-center input-file-label" for="filebutton">Upload your file here.</label>
+
+                    <input id="filebutton" ng-click="CampaignWizCtrl.campaign.campaign_picture = false; CampaignWizCtrl.showSpinner = true; CampaignWizCtrl.hidePreview = true; CampaignWizCtrl.show = false" name="campaign_picture" class="input-file" type="file" nv-file-select
+                        uploader="CampaignWizCtrl.Upload" multiple>
+                    <br>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    <div>
+        <p>Click here to upload photos from your Instagram Account.
+            <p>
+                <a href="#" ng-click="CampaignWizCtrl.authenticate()" class="btn btn-info btn-circle"><i class="fa fa-instagram"> Upload using Instagram</i></a>
+                <!--prompting instagram login -->
+    </div>
+
+</div>

@@ -1,0 +1,65 @@
+<h1 class="product-title"> SET YOUR GOAL</h1>
+
+<form name="vm.goalForm" class="form-horizontal">
+    <span><strong>Sales Goal</strong></span><br>
+    <div class="form-group pt5">
+
+        <div class="col-sm-8 pt5 mb10">
+
+            <slider type="range" class="show-overflow" ng-model="vm.campaign.target_orders" min="1" test="10" max="100"></slider>
+        </div>
+        <div class="col-sm-4">
+            <input ng-class="vm.calcProfit()" id="prependedtext" name="target_orders" class="form-control" type="number" ng-model="vm.campaign.target_orders" ng-init="vm.campaign.target_orders = vm.campaign.target_orders || 10" required>
+        </div>
+        <div class="col-sm-12 pt5">
+            <p class="small">Orders will print and ship only once this goal is met.</p>
+        </div>
+    </div>
+    <hr>
+    <div class="form-group">
+        <div class="col-xs-6">
+            <span class="pull-left"><strong>Estimated Profit</strong></span><br>
+            <span class="pull-left pt5" style="font-size: 32px;color: #33a4b7">{{vm.profit}}</span>
+        </div>
+        <div class="col-xs-6">
+            <span class="pull-right"><strong>Price per Unit</strong></span><br>
+            <span class="pull-right pt5" style="font-size: 30px;color: #3ab733" ng-model="vm.campaign.price" name="price">{{vm.campaign.price | currency}}</span><br>
+        </div>
+    </div>
+    <hr>
+    <div class="form-group">
+        <div class="col-sm-6">
+            <label class="label-control">Print Size</label>
+            <select class="form-control" ng-model="vm.campaign.options.size" ng-options="size for size in vm.sizes" ng-init="vm.campaign.options.size = vm.campaign.options.size || vm.sizes[0]"></select>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+            <label class="label-control">Paper Type</label>
+            <select class="form-control" ng-model="vm.campaign.options.paper_type" ng-options="type for type in vm.paperType" ng-init="vm.campaign.options.paper_type = vm.campaign.options.paper_type || vm.paperType[0]"></select>
+        </div>
+    </div>
+    <hr>
+    <div class="form-group">
+        <div class="col-xs-12">
+            <span><strong>Price per Unit</strong></span><br>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input class="form-control" type="number" ng-model="vm.campaign.price" ng-init="vm.campaign.price = vm.campaign.price || 50" min="{{vm.campaign.cost}}" ng-model-options="{debounce:300}" required><br>
+            </div>
+            <p class="small pt10">Minimum price for this print size: {{vm.campaign.cost | currency}}</p>
+        </div>
+    </div>
+</form>
+
+<br>
+<div class="cartFooter w100">
+    <div class="box-footer">
+        <div class="pull-left">
+            <a class="btn btn-default" ui-sref="public.campaignwizard.upload({campaign:vm.campaign})"> <i class="fa fa-arrow-left"></i> &nbsp; Previous Step </a>
+        </div>
+        <div class="pull-right">
+            <a ui-sref="public.campaignwizard.detail({campaign: vm.campaign})" ng-disabled="vm.goalForm.$invalid" prevent-click="vm.goalForm.$invalid" class="btn btn-primary btn-small "> Next Step &nbsp; <i class="fa fa-arrow-circle-right"></i> </a></div>
+    </div>
+</div>

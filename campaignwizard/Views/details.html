@@ -1,0 +1,143 @@
+<div>
+    <h1 class="product-title"> ADD A DESCRIPTION </h1>
+    <!-- Tab panes -->
+    <div class="tab-content clearfix">
+        <div class="tab-pane active" id="details">
+            <!--ENTER DETAILS HERE-->
+            <div id="collapse1" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <form class="form-horizontal" name="descriptionForm" ng-submit="vm.submitCollab(descriptionForm.$valid)">
+                        <fieldset>
+                            <!-- Title-->
+                            <div class="form-group" ng-class="{ 'has-error' : descriptionForm.name.$invalid && !descriptionForm.name.$pristine }">
+                                <label class="control-label" for="textinput">Title</label>
+                                <div>
+                                    <input id="textinput" name="name" placeholder="Title" class="form-control input-md" type="text" ng-model="vm.campaign.name" required>
+                                    <span class="help-block">*Summarize your Collab in 40 characters or less.</span></div>
+                                <p ng-show="descriptionForm.name.$invalid && !descriptionForm.name.$pristine" class="help-block">Title is required.</p>
+
+                            </div>
+
+                            <!-- Description -->
+                            <div class="form-group" ng-class="{ 'has-error' : descriptionForm.description.$invalid && !descriptionForm.description.$pristine }">
+                                <label class="control-label" for="textarea">Description</label>
+
+                                <div>
+                                    <textarea class="form-control" id="textarea" name="description" ng-model="vm.campaign.description" required>Description</textarea>
+                                </div>
+                                <p ng-show="descriptionForm.description.$invalid && !descriptionForm.description.$pristine" class="help-block">Description is required.</p>
+
+                            </div>
+
+                            <!-- URL -->
+                            <div class="form-group" ng-class="{ 'has-error' : descriptionForm.url.$invalid && !descriptionForm.url.$pristine }">
+                                <label class="control-label" for="prependedtext">Custom URL</label>
+
+                                <div>
+                                    <div class="input-group" uib-popover="Sorry, that url is taken!" popover-is-open="descriptionForm.url.$invalid && !descriptionForm.url.$pristine" popover-trigger="none" popover-placement="bottom-left"><span class="input-group-addon">www.theprintcollab.com/</span>
+                                        <input ng-model-options="{debounce: 300}" id="prependedtext" name="url" class="form-control" placeholder="your URL" type="text" ng-model="CampaignWizCtrl.campaign.url" url-validate>
+                                    </div>
+                                    <p class="help-block">This is where you can send your buyers to view your Collab (optional).</p>
+
+
+                                </div>
+                            </div>
+
+                            <!-- Category/Tags -->
+                            <div class="form-group">
+                                <label class="control-label">Tags</label>
+                                <div>
+                                    <tag-input-form ng-model="vm.campaign.tags" classes="form-control"></tag-input-form>
+                                    <p class="help-block">Separate tags with spaces</p>
+                                </div>
+                            </div>
+                </div>
+
+                <!-- Duration -->
+                <div class="form-group" ng-class="{ 'has-error' : descriptionForm.expiration_date.$invalid && !descriptionForm.expiration_date.$pristine }">
+                    <label class="control-label">Duration</label>
+                    <!--<date-picker></date-picker>-->
+                    <div>
+                        <p>Collab expires on:<strong> {{vm.campaign.expiration_date}}</strong></p>
+                        <div class="filterBox">
+                            <br>*Pick a date as to when you want your Collab duration to end<br>
+                            <select class="form-control" ng-model="vm.dateItem" ng-options="date for date in vm.dates" ng-init="vm.dateItem = vm.dateItem || vm.dates[0]" ng-click="vm.convertDate()">
+                                </select>
+                        </div>
+
+                    </div>
+                    <p ng-show="descriptionForm.expiration_date.$invalid && !descriptionForm.expiration_date.$pristine" class="help-block">Date is required.</p>
+                </div>
+                <hr>
+                </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cartFooter w100">
+    <div class="box-footer">
+        <div class="pull-left">
+            <a class="btn btn-default" ui-sref="public.campaignwizard.goal({campaign:vm.campaign})"> <i class="fa fa-arrow-left"></i> &nbsp; Previous Step </a>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-primary btn-small " ng-disabled="descriptionForm.$invalid" ng-click="vm.submitCampaign(vm.campaign)"> Submit &nbsp; <i class="fa fa-arrow-circle-right"></i> </a></div>
+    </div>
+</div>
+</div>
+
+<div modal-render="true" tabindex="-1" role="dialog" class="modal fade ng-isolate-scope signUpContent in" uib-modal-animation-class="fade" modal-in-class="in" ng-style="{'z-index': 1050 + index*10, display: 'block'}" uib-modal-window="modal-window" window-top-class="signUpContent"
+    index="0" animate="animate" modal-animation="true" style="z-index: 1050; display: block;" ng-show="vm.showModal">
+    <div class="modal-dialog ">
+        <!--<div class="modal-content" uib-modal-transclude="">-->
+        <!-- Modal Login start -->
+        <form name="modalForm" ng-submit="ModalCtrl.login(modalForm.$valid)" novalidate="" class="ng-pristine ng-scope ng-invalid ng-invalid-required">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.hideModal()"> × </button>
+                <h3 class="modal-title-site text-center"> Login to PRINT Collab </h3>
+            </div>
+            <p style="text-align: center">*You must be logged in in order to submit a campaign.</p>
+            <div class="modal-body">
+                <div class="form-group login-username" ng-class="{'has-error' : modalForm.Email.$invalid &amp;&amp; !modalForm.Email.$pristine}">
+                    <div>
+                        <input name="Email" id="login-user" class="form-control input ng-pristine ng-untouched ng-invalid ng-invalid-required" size="20" placeholder="Enter Email" type="text" ng-model="ModalCtrl.user.email" required="">
+                        <p ng-show="modalForm.Email.$invalid &amp;&amp; !modalForm.Email.$pristine" class="help-block ng-hide"> Please Provide Email</p>
+                    </div>
+                </div>
+                <div class="form-group login-password" ng-class="{'has-error' : modalForm.Password.$invalid &amp;&amp; !modalForm.Password.$pristine}">
+                    <div>
+                        <input name="Password" id="login-password" class="form-control input ng-pristine ng-untouched ng-invalid ng-invalid-required" size="20" placeholder="Password" type="password" ng-model="ModalCtrl.user.password" required="">
+                    </div>
+                    <p ng-show="modalForm.Password.$invalid &amp;&amp; !modalForm.Password.$pristine" class="help-block ng-hide">Please Provide Password</p>
+                </div>
+                <div class="form-group">
+                    <!--<div>-->
+                    <div class="checkbox login-remember">
+                        <label>
+                                <input name="rememberme" style="margin-left: -12px" value="forever" checked="checked" type="checkbox">Remember Me </label>
+                    </div>
+                    <!--</div>-->
+                </div>
+                <div>
+                    <!-- ngIf: ModalCtrl.showError -->
+                    <div>
+                        <input name="submit" class="btn btn-block btn-lg btn-primary" value="LOGIN" type="submit" ng-disabled="modalForm.$invalid" disabled="disabled">
+                        <!--ng-click="ModalCtrl.login()"-->
+                        <!--clicked=true-->
+                    </div>
+                </div>
+                <!--userForm-->
+            </div>
+            <!-- modal body ends-->
+            <div class="modal-footer">
+                <p class="text-center"> Not here before? <a data-toggle="modal" data-dismiss="modal" href="#ModalSignup"> Sign Up. </a> <br>
+                    <a href="forgot-password.html"> Lost your password? </a></p>
+            </div>
+
+            <!-- /.modal-content -->
+        </form>
+
+    </div>
+</div>
+</div>
